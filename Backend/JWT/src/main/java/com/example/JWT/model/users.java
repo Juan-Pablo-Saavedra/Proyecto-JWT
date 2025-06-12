@@ -4,9 +4,14 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.util.Collection;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 @Entity
 @Table(name = "users")
-public class users {
+public class users implements UserDetails{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -87,5 +92,10 @@ public class users {
 
     public void setRecoveryRequests(List<recovery_request> recoveryRequests) {
         this.recoveryRequests = recoveryRequests;
+    }
+
+     @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.getName()));
     }
 }
